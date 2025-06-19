@@ -1,6 +1,32 @@
+"use client";
 import Link from "next/link";
+import { useState } from "react";
+import axios from "axios";
+
+/**
+ * 查询name对应产品
+ * @param {*} productId
+ * @returns 
+ */
+async function loadProductName(name) {
+  const { data } = await axios.get(
+    `http://localhost:3001/api/products/search?name=${encodeURIComponent(name)}`
+  );
+  console.log(data,'当前的name');
+  return data;
+}
 
 function Navbar() {
+
+  const [ nameProduct, setNameProduct ] = useState("");
+  const initTable = () => {
+    console.log("initTable");
+  }
+
+  const handleChange = (e) => {
+    loadProductName(nameProduct);
+  }
+
   return (
     <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-gray-800">
       <div className="container flex flex-wrap justify-between items-center mx-auto px-7">
@@ -79,6 +105,25 @@ function Navbar() {
                 New Product
               </Link>
             </li>
+            <> 
+              <button
+                        type="button"
+                        className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                        onClick={initTable}
+              >
+                初始化table表：product
+              </button>
+
+             <input type="text" className="bg-slate-300"  value={nameProduct} onChange={ (e) => setNameProduct(e.target.value) } />
+              <button
+                        type="button"
+                        className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                        onClick={handleChange}
+              >
+                搜索name：table表中product
+              </button>
+
+            </>
           </ul>
         </div>
       </div>

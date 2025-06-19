@@ -3,12 +3,11 @@ import { NextResponse } from "next/server";
 
 /**
  * 
- * @returns 获取当前的所有的product的信息
+ * @returns 获取当前的所有的email的信息
  */
-export async function GET(params) {
-  console.log("GET",'会走这里吗',params);
+export async function GET() {
   try {
-    const results = await pool.query("SELECT * FROM product");
+    const results = await pool.query("SELECT * FROM email");
     return NextResponse.json(results);
   } catch (error) {
     return NextResponse.json(
@@ -20,10 +19,29 @@ export async function GET(params) {
   }
 }
 
-
+/**
+ * 查询某个email的信息
+ * @param {*} request
+ * @param {*} params
+ * @returns
+ * 
+ */
+export async function Search(address) {
+  try {
+    const results = await pool.query("SELECT * FROM email");
+    return NextResponse.json(results);
+  } catch (error) {
+    return NextResponse.json(
+      { message: error.message },
+      {
+        status: 500,
+      }
+    );
+  }
+}
 
 /**
- * 创建一个product的信息到数据库
+ * 新建当前的email的信息
  * @param {*} request 
  * @returns 
  */
@@ -32,7 +50,7 @@ export async function POST(request) {
     const { name, description, price } = await request.json();
     console.log(name, description, price);
 
-    const result = await pool.query("INSERT INTO product SET ?", {
+    const result = await pool.query("INSERT INTO email SET ?", {
       name,
       description,
       price,

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { pool } from "src/config/db";
 
 export async function GET(request, { params }) {
+  console.log( params, "GET");
   try {
     const result = await pool.query("SELECT * FROM product WHERE id = ?", [
       params.id,
@@ -10,6 +11,7 @@ export async function GET(request, { params }) {
   } catch (error) {
     return NextResponse.json({ message: error.message });
   }
+
 }
 
 export async function DELETE(request, { params }) {

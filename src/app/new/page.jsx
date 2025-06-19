@@ -1,21 +1,14 @@
-import axios from "axios";
 import { ProductForm } from "@/components/ProductForm";
+import { BASE_URL } from "../../../config"; // 路径根据实际情况调整
 
-function NewPage() {
+// 组件直接用 async
+export default async function NewPage() {
+  const res = await fetch(`${BASE_URL}/api/products`, { cache: "no-store" });
+  const products = await res.json();
+
   return (
     <div className="h-5/6 grid place-items-center">
-      <ProductForm />
+      <ProductForm products={products} />
     </div>
   );
 }
-export default NewPage;
-
-export const getServerSideProps = async (context) => {
-  const res = await axios.get("http://localhost:3000/api/products");
-
-  return {
-    props: {
-      products: res.data,
-    },
-  };
-};

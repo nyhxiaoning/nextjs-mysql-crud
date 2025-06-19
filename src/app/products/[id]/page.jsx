@@ -3,17 +3,26 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { useState } from "react";
 
+/**
+ * 加载某一个产品的信息
+ * @param {*} productId 
+ * @returns 
+ */
 async function loadProduct(productId) {
   const { data } = await axios.get(
-    "http://localhost:3000/api/products/" + productId
+    "http://localhost:3001/api/products/" + productId
   );
   return data;
 }
 
+
+
 async function ProductPage({ params }) {
   const router = useRouter();
   const product = await loadProduct(params.id);
+
 
   const handleDelete = async (id) => {
     try {
