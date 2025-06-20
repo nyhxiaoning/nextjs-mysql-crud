@@ -45,17 +45,20 @@ const SearchCard = () => {
   }
   
   const handleSearch = async () => {
+    console.log(inputValue, "inputValue");
     if (!inputValue.trim()) {
       message.error("Please enter the content and query");
 
       return;
     } else {
-      if (!validateEmail(inputValue)) {
+      if (!validateEmail(inputValue.trim())) {
         message.error("Please enter a valid email address");
         return;
       }
       try {
-        let tempResult = await SearchEmails(inputValue);
+        // 优化一下，将inputValue的前后空格去掉
+        console.log(inputValue.trim(), "inputValue.trim()");
+        let tempResult = await SearchEmails(inputValue.trim());
         console.log(tempResult, "tempResult");
         setObjdata(tempResult);
         if (!tempResult ) {
