@@ -5,6 +5,8 @@ import { ProductCard } from "@/components/ProductCard";
 import allData from "@/consts/allData.ts";
 import SearchBox from "../../components/SearchBox";
 
+
+
 async function loadEmails() {
   const { data } = await axios.get(`${allData.baseURL}/api/emails`);
   console.log(data);

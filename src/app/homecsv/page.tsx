@@ -6,10 +6,21 @@ import React, { useState } from 'react';
 import Papa from 'papaparse';
 import { Table, Upload, message, Button,Modal,Input } from 'antd';
 import type { UploadProps } from 'antd';
+import axios from "axios";
+
+
 import { UploadOutlined } from '@ant-design/icons';
 // email表单数据汇总查询
 const VALID_CONFIRM_CODE = 'jeejio2025';
 
+
+async function batchInsertData(data: any[]) {
+  // 这里可以实现批量插入数据到数据库的逻辑
+  console.log('导入批量数据到数据库data', data);
+  let results = await axios.post("/api/emails", data);
+  console.log(results);
+  console.log('object---batchInsertData', data);
+}
 
 interface ParsedRow {
   [key: string]: string;
@@ -64,7 +75,7 @@ const CsvUploader: React.FC = () => {
       },
     });
   };
-  
+
   // 验证确认码
   const handleConfirm = async () => {
     if (!confirmCode.trim()) {
@@ -80,7 +91,8 @@ const CsvUploader: React.FC = () => {
 
       if (confirmCode === VALID_CONFIRM_CODE) {
         // 确认码正确，执行上传逻辑
-        await uploadToDatabase();
+        // await uploadToDatabase();
+        await batchInsertData(parsedData);
         Modal.success({
           title: '操作成功',
           content: '数据已成功上传到数据库',
@@ -102,6 +114,7 @@ const CsvUploader: React.FC = () => {
   // 模拟上传到数据库的函数（实际项目中应替换为真实API调用）
   const uploadToDatabase = async () => {
     // 这里是上传逻辑，如调用API
+    console.log(parsedData,'parsedData');
     console.log('Uploading data to database...');
     // 模拟上传延迟
     await new Promise(resolve => setTimeout(resolve, 1500));
