@@ -8,15 +8,23 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/icons": "^6.0.0",
+    "antd": "^5.26.1",
     "axios": "^1.4.0",
+    "csv-parse": "^5.6.0",
+    "formidable": "^3.5.4",
+    "fs": "0.0.1-security",
     "mysql2": "^3.6.0",
     "next": "13.4.12",
+    "papaparse": "^5.5.3",
+    "path": "^0.12.7",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",
     "serverless-mysql": "^1.5.5"
   },
   "devDependencies": {
+    "@types/react": "19.1.8",
     "autoprefixer": "^10.4.14",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",

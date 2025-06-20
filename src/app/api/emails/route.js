@@ -1,6 +1,7 @@
 import { pool } from "src/config/db";
 import { NextResponse } from "next/server";
 
+// 所有数据 http://localhost:3000/emails
 /**
  * 
  * @returns 获取当前的所有的email的信息
@@ -29,6 +30,7 @@ export async function GET() {
 export async function Search(address) {
   try {
     const results = await pool.query("SELECT * FROM email");
+    console.log(results, "Search-all");
     return NextResponse.json(results);
   } catch (error) {
     return NextResponse.json(

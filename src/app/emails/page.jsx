@@ -3,24 +3,27 @@ import axios from "axios";
 import { ProductCard } from "@/components/ProductCard";
 
 import allData from "@/consts/allData.ts";
+import SearchBox from "../../components/SearchBox";
 
-async function loadProduct() {
-  const { data } = await axios.get(`${allData.baseURL}/api/products`);
+async function loadEmails() {
+  const { data } = await axios.get(`${allData.baseURL}/api/emails`);
   console.log(data);
+  console.log('data-----');
   return data;
 }
 
 
 
 async function ProductsPage() {
-  const products = await loadProduct();
+  const products = await loadEmails();
   if (products.length === 0) return <h1>No Products</h1>;
 
   return (
-    <div className="grid gap-4 grid-cols-1 md:grid-cols-4">
-      {products.map((product) => (
+    <div className="grid  grid-cols-1 ">
+      <SearchBox />
+      {/* {products.map((product) => (
         <ProductCard key={product.id} product={product} />
-      ))}
+      ))} */}
     </div>
   );
 }

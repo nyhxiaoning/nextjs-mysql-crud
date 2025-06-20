@@ -1,5 +1,7 @@
 ### get all products
-
+# 这个 products.http 文件是一个HTTP请求测试文件，通常用于在开发过程中快速测试和调试你的 API 接口。
+# 可以在 VS Code 里直接点击每个请求旁的“Send Request”按钮（需安装 REST Client 插件），快速发送 HTTP 请求并查看响应结果。
+# 帮助记录和分享常用的 API 调用方式，便于团队协作和接口文档管理。
 GET http://localhost:3000/api/products
 
 ### get a single product
