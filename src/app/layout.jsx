@@ -1,5 +1,5 @@
 // import Navbar from "./../components/Navbar";
-import HomeCSV from "./../app/home/page";
+// import HomeCSV from "./../app/home/page";
 import { Toaster } from "react-hot-toast";
 // import "./globals.css";
 
@@ -13,7 +13,6 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         {/* <Navbar /> */}
-        <HomeCSV />
         <div className="dark:text-white h-[calc(100vh-5rem)] p-10">
           <div className="container mx-auto h-full">{children}</div>
         </div>

@@ -38,12 +38,22 @@ const SearchCard = () => {
     value: "",
     copied: false,
   });
+
+  function validateEmail(email) {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  }
+  
   const handleSearch = async () => {
     if (!inputValue.trim()) {
-      message.error("请输入内容后查询");
+      message.error("Please enter the content and query");
 
       return;
     } else {
+      if (!validateEmail(inputValue)) {
+        message.error("Please enter a valid email address");
+        return;
+      }
       try {
         let tempResult = await SearchEmails(inputValue);
         console.log(tempResult, "tempResult");
@@ -69,11 +79,11 @@ const SearchCard = () => {
         level={3}
         style={{
           marginBottom: 24,
-          color: "#ffffff",
+          color: "#000000",
           fontWeight: "bold",
         }}
       >
-        查询界面
+        Query your order
       </Title>
 
       <div
@@ -88,14 +98,14 @@ const SearchCard = () => {
         }}
       >
         <Input
-          placeholder="请输入查询内容"
+          placeholder="Please enter your email address"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onPressEnter={handleSearch}
           style={{ flex: 1, marginRight: 8 }}
         />
         <Button type="primary" onClick={handleSearch}>
-          查询
+          Query
         </Button>
       </div>
 
@@ -113,7 +123,10 @@ const SearchCard = () => {
             borderRadius: 4,
           }}
         >
-          <Card title="查询结果" style={{ margin: "0 auto",border:'0px' }}>
+          <Card
+            title="Query results"
+            style={{ margin: "0 auto", border: "0px" }}
+          >
             {/* <Text>{result}</Text> */}
 
             {objdata && objdata?.orders && (
