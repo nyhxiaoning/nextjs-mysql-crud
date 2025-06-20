@@ -1,14 +1,11 @@
-// app/components/SearchBox.tsx
 'use client';
 
-import axios from 'axios';
 import React, { useState } from 'react';
-import { Input, Button, Row, Col, Typography, Divider } from 'antd';
+import { Input, Button, Row, Col, Typography, Divider, Card } from 'antd';
+import axios from 'axios';
+
 import allData from '../consts/allData';
-
-const { Text } = Typography;
-
-// api
+const { Title, Text } = Typography;
 async function SearchEmails(email) {
     const { data } = await axios.get(
         `${allData.baseURL}/api/emails/search?email=${encodeURIComponent(email)}`
@@ -17,30 +14,33 @@ async function SearchEmails(email) {
       return data;
 }
 
-
-const SearchBox = () => {
+const SearchCard= () => {
   const [inputValue, setInputValue] = useState('');
   const [result, setResult] = useState(null);
 
   const handleSearch = () => {
-    if (!inputValue) {
+    if (!inputValue.trim()) {
       setResult('请输入内容后查询');
-      return;
+    } else {
+        let tempResult = SearchEmails(inputValue)
+       setResult(tempResult)
+      setResult(`你输入的查询内容是：「${inputValue}」`);
     }
-
-    SearchEmails(inputValue)
-    // 模拟查询逻辑
-    setResult(`你输入的查询内容是：${inputValue}`);
   };
 
   return (
-    <div style={{ maxWidth: 800, margin: '100px auto', padding: 24, border: '1px solid #ccc', borderRadius: 8 }}>
-      <Row gutter={12} align="middle">
+    <div style={{ maxWidth: 700, margin: '80px auto', padding: 24 }}>
+      <Title level={3} style={{ textAlign: 'center' }}>
+        查询界面
+      </Title>
+
+      <Row gutter={12} align="middle" justify="center">
         <Col flex="auto">
           <Input
             placeholder="请输入查询内容"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
+            onPressEnter={handleSearch}
           />
         </Col>
         <Col>
@@ -53,12 +53,12 @@ const SearchBox = () => {
       <Divider />
 
       {result && (
-        <Text type="secondary" style={{ fontSize: 16 }}>
-          查询结果：{result}
-        </Text>
+        <Card title="查询结果" bordered style={{ marginTop: 24 }}>
+          <Text>{result}</Text>
+        </Card>
       )}
     </div>
   );
 };
 
-export default SearchBox;
+export default SearchCard;
