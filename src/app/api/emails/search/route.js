@@ -3,7 +3,7 @@ import { pool } from "src/config/db";
 
 // api接口：http://localhost:3000/email/search?name=
 export async function GET(request, { params }) {
-  console.log("调用search函数了吗");
+  console.log("调用search函数了吗-email");
   // 解析完整 URL 获取查询参数
   const { searchParams } = new URL(request.url);
   const email = searchParams.get("email"); // 获取 name 参数
@@ -14,10 +14,7 @@ export async function GET(request, { params }) {
     ]);
     console.log(result, "result");
     if (result.length === 0) {
-      return NextResponse.json(
-        { message: "Product not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({});
     }
     return NextResponse.json(result[0]);
   } catch (error) {

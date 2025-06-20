@@ -19,7 +19,7 @@ async function ProductsPage() {
   if (products.length === 0) return <h1>No Products</h1>;
 
   return (
-    <div className="grid  grid-cols-1 ">
+    <div >
       <SearchBox />
       {/* {products.map((product) => (
         <ProductCard key={product.id} product={product} />
