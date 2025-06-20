@@ -49,9 +49,18 @@ export async function Search(address) {
  */
 export async function POST(request) {
   try {
-      console.log(request, "request");
+    console.log(request, "request");
     const data = await request.json();
     console.log(data, "data");
+    // ✅ 1. 确保 email 表存在，如果不存在就创建
+    await pool.query(`
+          CREATE TABLE IF NOT EXISTS email (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            email VARCHAR(255) NOT NULL,
+            orders VARCHAR(255),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          )
+        `);
     // return
     // 单行一条插入实现
     // const result = await pool.query("INSERT INTO email SET ?", {
@@ -60,7 +69,7 @@ export async function POST(request) {
     // });
 
     // 如果需要插入多行数据，可以使用以下方式
-    const placeholders= [];
+    const placeholders = [];
     const values = [];
 
     data.forEach((item) => {
@@ -76,7 +85,6 @@ export async function POST(request) {
       ", "
     )}`;
     const result = await pool.query(sql, values);
-
 
     return NextResponse.json(result);
   } catch (error) {

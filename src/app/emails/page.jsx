@@ -8,17 +8,27 @@ import SearchBox from "../../components/SearchBox";
 
 
 async function loadEmails() {
-  const { data } = await axios.get(`${allData.baseURL}/api/emails`);
-  console.log(data);
-  console.log('data-----');
-  return data;
+  try {
+    const { data } = await axios.get(`${allData.baseURL}/api/emails`);
+    console.log(data);
+    console.log("data-----");
+    return data;
+  } catch (error) {
+    console.log(error)
+  }
+ 
 }
 
 
 
 async function ProductsPage() {
-  const products = await loadEmails();
-  if (products.length === 0) return <h1>No Products</h1>;
+  try {
+    const products = await loadEmails();
+    if (products.length === 0) return <h1>No Products</h1>;
+  
+  } catch (error) {
+    console.log(error);
+  }
 
   return (
     <div >
