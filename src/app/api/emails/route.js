@@ -67,7 +67,8 @@ export async function POST(request) {
     //   email,
     //   orders,
     // });
-
+    // 删除表中的所有数据
+    await pool.query("DELETE FROM email");
     // 如果需要插入多行数据，可以使用以下方式
     const placeholders = [];
     const values = [];
