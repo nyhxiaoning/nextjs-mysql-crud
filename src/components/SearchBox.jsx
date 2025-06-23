@@ -21,7 +21,7 @@ const { Title, Text } = Typography;
 async function SearchEmails(email) {
   try {
     const { data } = await axios.get(
-      `${allData.baseURL}/api/emails/search?email=${encodeURIComponent(email)}`
+      `/api/emails?email=${encodeURIComponent(email)}`
     );
     console.log(data, "当前的 email");
     return data;
