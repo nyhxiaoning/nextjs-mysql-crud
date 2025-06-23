@@ -95,7 +95,7 @@ const SearchCard = () => {
       <div
         style={{
           display: "inline-flex",
-          width: "45%",
+          width: "85%",
           maxWidth: 600,
           marginBottom: 16,
           border: "1px solid #d9d9d9",
@@ -121,7 +121,7 @@ const SearchCard = () => {
         <div
           style={{
             display: "inline-flex",
-            width: "45%",
+            width: "85%",
             maxWidth: 600,
             marginBottom: 16,
             border: "1px solid #d9d9d9",
