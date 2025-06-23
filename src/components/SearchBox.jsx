@@ -86,8 +86,11 @@ const SearchCard = () => {
           fontWeight: "bold",
         }}
       >
-        Query your order
+        PixelMug Shipment Lookup
       </Title>
+      <p style={{ color: "#aaaaaa" }}>
+        Enter the email you used when making purchase to check shipping status:
+      </p>
 
       <div
         style={{

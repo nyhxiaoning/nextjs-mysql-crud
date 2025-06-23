@@ -22,7 +22,8 @@
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",
-    "serverless-mysql": "^1.5.5"
+    "serverless-mysql": "^1.5.5",
+    "supports-color": "^10.0.0"
   },
   "devDependencies": {
     "@types/react": "19.1.8",

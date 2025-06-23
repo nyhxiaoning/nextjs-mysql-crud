@@ -3,6 +3,8 @@
 Nextjs CRUD using MySQL and TailwindCSS
 
 ## 项目说明
+部署使用npm
+
 - 项目使用 Nextjs 14 开发，使用 MySQL 作为数据库，使用 TailwindCSS 作为样式框架。
 
 ### 项目默认库使用说明

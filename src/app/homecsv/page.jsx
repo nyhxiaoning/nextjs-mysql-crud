@@ -5,7 +5,6 @@
 import React, { useState } from 'react';
 import Papa from 'papaparse';
 import { Table, Upload, message, Button,Modal,Input } from 'antd';
-import type { UploadProps } from 'antd';
 import axios from "axios";
 
 
@@ -14,7 +13,7 @@ import { UploadOutlined } from '@ant-design/icons';
 const VALID_CONFIRM_CODE = 'jeejio2025';
 
 
-async function batchInsertData(data: any[]) {
+async function batchInsertData(data) {
   // 这里可以实现批量插入数据到数据库的逻辑
   console.log('导入批量数据到数据库data', data);
   let results = await axios.post("/api/emails", data);
@@ -22,14 +21,12 @@ async function batchInsertData(data: any[]) {
   console.log('object---batchInsertData', data);
 }
 
-interface ParsedRow {
-  [key: string]: string;
-}
 
-const CsvUploader: React.FC = () => {
-  const [parsedData, setParsedData] = useState<ParsedRow[]>([]);
-  const [columns, setColumns] = useState<any[]>([]);
-  const [uploadFlag, setUploadFlag] = useState<boolean>(false);
+
+const CsvUploader= () => {
+  const [parsedData, setParsedData] = useState([]);
+  const [columns, setColumns] = useState([]);
+  const [uploadFlag, setUploadFlag] = useState(false);
 
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -44,8 +41,8 @@ const CsvUploader: React.FC = () => {
     setErrorMessage('');
   };
 
-  const handleCSV = (file: File) => {
-    Papa.parse<ParsedRow>(file, {
+  const handleCSV = (file) => {
+    Papa.parse(file, {
       header: true, // 首行为字段名
       skipEmptyLines: true,
       complete: function (results) {
@@ -121,13 +118,9 @@ const CsvUploader: React.FC = () => {
     return true;
   };
 
-  const uploadSqlFn = async () => {
 
 
-
-  }
-
-  const props: UploadProps = {
+  const props = {
     accept: '.csv',
     beforeUpload: (file) => {
       handleCSV(file);

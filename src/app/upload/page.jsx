@@ -4,7 +4,7 @@ import { useState } from "react";
 export default function UploadForm() {
   const [fileInfo, setFileInfo] = useState(null);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("file", e.target.file.files[0]);

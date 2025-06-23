@@ -1,14 +1,17 @@
+// export const runtime = "edge";
+
 import { pool } from "src/config/db";
 import { NextResponse } from "next/server";
 
 // 所有数据 http://localhost:3000/emails
 /**
- * 
+ *
  * @returns 获取当前的所有的email的信息
  */
 export async function GET() {
   try {
     const results = await pool.query("SELECT * FROM email");
+    console.log(results, "Search-all");
     return NextResponse.json(results);
   } catch (error) {
     return NextResponse.json(
@@ -25,27 +28,27 @@ export async function GET() {
  * @param {*} request
  * @param {*} params
  * @returns
- * 
+ *
  */
-export async function Search(address) {
-  try {
-    const results = await pool.query("SELECT * FROM email");
-    console.log(results, "Search-all");
-    return NextResponse.json(results);
-  } catch (error) {
-    return NextResponse.json(
-      { message: error.message },
-      {
-        status: 500,
-      }
-    );
-  }
-}
+// export async function Search(address) {
+//   try {
+//     const results = await pool.query("SELECT * FROM email");
+//     console.log(results, "Search-all");
+//     return NextResponse.json(results);
+//   } catch (error) {
+//     return NextResponse.json(
+//       { message: error.message },
+//       {
+//         status: 500,
+//       }
+//     );
+//   }
+// }
 
 /**
  * 新建当前的email的信息
- * @param {*} request 
- * @returns 
+ * @param {*} request
+ * @returns
  */
 export async function POST(request) {
   try {

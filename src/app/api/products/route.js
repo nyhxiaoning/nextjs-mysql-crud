@@ -1,12 +1,14 @@
+// export const runtime = "edge";
+
 import { pool } from "src/config/db";
 import { NextResponse } from "next/server";
 
 /**
- * 
+ *
  * @returns 获取当前的所有的product的信息
  */
 export async function GET(params) {
-  console.log("GET",'会走这里吗',params);
+  console.log("GET", "会走这里吗", params);
   try {
     const results = await pool.query("SELECT * FROM product");
     return NextResponse.json(results);
@@ -20,12 +22,10 @@ export async function GET(params) {
   }
 }
 
-
-
 /**
  * 创建一个product的信息到数据库
- * @param {*} request 
- * @returns 
+ * @param {*} request
+ * @returns
  */
 export async function POST(request) {
   try {
