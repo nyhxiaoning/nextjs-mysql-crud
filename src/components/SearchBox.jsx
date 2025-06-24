@@ -104,7 +104,7 @@ const SearchCard = () => {
         }}
       >
         <Input
-          placeholder="Please enter your email address"
+          placeholder="Please enter your email"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onPressEnter={handleSearch}
