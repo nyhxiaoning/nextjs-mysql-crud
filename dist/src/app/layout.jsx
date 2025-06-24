@@ -1,6 +1,6 @@
 // import Navbar from "./../components/Navbar";
 // import HomeCSV from "./../app/home/page";
-// import { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 // import "./globals.css";
 
 export const metadata = {

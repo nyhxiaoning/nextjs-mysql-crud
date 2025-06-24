@@ -50,6 +50,7 @@ const CsvUploader= () => {
         console.log('解析后的 CSV 数据:', rows);
         // 优化实战一下，一次性给数据库表插入所有的数据到table表中
         // 插入数据到数据库中
+
         setParsedData(rows);
         setUploadFlag(true);
         // 自动生成列头
@@ -88,7 +89,6 @@ const CsvUploader= () => {
       if (confirmCode === VALID_CONFIRM_CODE) {
         // 确认码正确，执行上传逻辑
         // await uploadToDatabase();
-        // 
         await batchInsertData(parsedData);
         Modal.success({
           title: '操作成功',

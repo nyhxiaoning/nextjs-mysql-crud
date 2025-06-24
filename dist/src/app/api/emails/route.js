@@ -50,21 +50,6 @@ export async function GET(request, { params }) {
 //   }
 // }
 
-function processString(input) {
-  // 处理非字符串输入，将其转换为字符串
-  const str = String(input);
-
-  // 如果字符串中不包含逗号，直接返回原字符串
-  if (!str.includes(",")) {
-    return str.trim();
-  }
-
-  // 分割字符串，去除每个部分的前后空格，然后重新连接
-  return str
-    .split(",")
-    .map((part) => part.trim())
-    .join(",");
-}
 /**
  * 新建当前的email的信息
  * @param {*} request
@@ -98,15 +83,11 @@ export async function POST(request) {
 
     data.forEach((item) => {
       const email = item["email address"];
-      // 同时注意，这里将空格去掉，因为空格是无效的字符，会导致插入失败
       const orders = item["tracking number"];
       console.log(item, item["tracking number"], item["email address"]);
-      console.log(item["tracking number"]);
-      let ordersAfterprocessString = processString(orders);
-      // 如果发现orders是多个，分开，这里数据去掉空格
       // console.log('email, orders', email, orders);
       placeholders.push("(?, ?)");
-      values.push(email, ordersAfterprocessString);
+      values.push(email, orders);
     });
 
     const sql = `INSERT INTO email (email, orders) VALUES ${placeholders.join(

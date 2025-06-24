@@ -99,7 +99,7 @@ const SearchCard = () => {
           maxWidth: 600,
           marginBottom: 16,
           border: "1px solid #d9d9d9",
-          padding: "40px 10px",
+          padding: "40px 30px",
           borderRadius: 4,
         }}
       >
@@ -125,7 +125,7 @@ const SearchCard = () => {
             maxWidth: 600,
             marginBottom: 16,
             border: "1px solid #d9d9d9",
-            padding: "40px 10px",
+            padding: "40px 30px",
             borderRadius: 4,
           }}
         >
@@ -142,7 +142,6 @@ const SearchCard = () => {
                     margin: 0,
                     fontFamily: "Arial, sans-serif",
                     fontSize: "16px",
-                    fontWeight: "bold",
                     lineHeight: "1.5",
                     textAlign: "left",
                   }}
@@ -152,38 +151,13 @@ const SearchCard = () => {
                 <p
                   style={{
                     margin: 0,
-                    // width: "65%",
                     fontFamily: "Arial, sans-serif",
                     fontSize: "16px",
                     lineHeight: "1.5",
                     textAlign: "left",
                   }}
                 >
-                  <span style={{ fontWeight: "bold" }}>Tracking number:</span>
-
-                  <p
-                    style={{
-
-                      textAlign: "center",
-                    }}
-                  >
-                    {result?.orders.split(",").map(
-                      (item, index)=>(
-                        <p
-                          key={index}
-                          style={{
-                            margin: 0,
-                            fontFamily: "Arial, sans-serif",
-                            fontSize: "16px",
-                            lineHeight: "1.5",
-                            textAlign: "left",
-                          }}
-                        >
-                          {item}
-                        </p>
-                      )
-                    )}
-                  </p>
+                  Tracking number: {result?.orders}
                 </p>
                 <p
                   style={{
