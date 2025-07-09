@@ -54,43 +54,84 @@ export async function POST(request) {
   try {
     console.log(request, "request");
     const data = await request.json();
-    console.log(data, "data");
+    console.log(data, "data---post接口创建");
     // ✅ 1. 确保 email 表存在，如果不存在就创建
-    await pool.query(`
-          CREATE TABLE IF NOT EXISTS email (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            email VARCHAR(255) NOT NULL,
-            orders VARCHAR(255),
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-          )
-        `);
-    // return
-    // 单行一条插入实现
-    // const result = await pool.query("INSERT INTO email SET ?", {
-    //   email,
-    //   orders,
-    // });
-    // 删除表中的所有数据
-    await pool.query("DELETE FROM email");
-    // 如果需要插入多行数据，可以使用以下方式
-    const placeholders = [];
-    const values = [];
+    if (data.sourceType === "default") {
+      // 仅订单导入
+      await pool.query(`
+        CREATE TABLE IF NOT EXISTS email (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          email VARCHAR(255) NOT NULL,
+          orders VARCHAR(255),
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `);
+      // return
+      // 单行一条插入实现
+      // const result = await pool.query("INSERT INTO email SET ?", {
+      //   email,
+      //   orders,
+      // });
+      // 删除表中的所有数据
+      await pool.query("DELETE FROM email");
+      // 如果需要插入多行数据，可以使用以下方式
+      const placeholders = [];
+      const values = [];
 
-    data.forEach((item) => {
-      const email = item["email address"];
-      const orders = item["tracking number"];
-      console.log(item, item["tracking number"], item["email address"]);
-      // console.log('email, orders', email, orders);
-      placeholders.push("(?, ?)");
-      values.push(email, orders);
-    });
+      data.data.forEach((item) => {
+        const email = item["email"];
+        const orders = item["orders"];
+        console.log(item, item["orders"], item["email"]);
+        // console.log('email, orders', email, orders);
+        placeholders.push("(?, ?)");
+        values.push(email, orders);
+      });
 
-    const sql = `INSERT INTO email (email, orders) VALUES ${placeholders.join(
-      ", "
-    )}`;
-    const result = await pool.query(sql, values);
+      const sql = `INSERT INTO email (email, orders) VALUES ${placeholders.join(
+        ", "
+      )}`;
+      const result = await pool.query(sql, values);
 
-    return NextResponse.json(result);
+      return NextResponse.json(result);
+    } else if (data.sourceType === "extended") {
+      // 全量导入
+      await pool.query(`
+        CREATE TABLE IF NOT EXISTS allemail (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          email VARCHAR(255) NOT NULL,
+          orders VARCHAR(255),
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `);
+      // return
+      // 单行一条插入实现
+      // const result = await pool.query("INSERT INTO email SET ?", {
+      //   email,
+      //   orders,
+      // });
+      // 删除表中的所有数据
+      await pool.query("DELETE FROM allemail");
+      // 如果需要插入多行数据，可以使用以下方式
+      const placeholders = [];
+      const values = [];
+
+      data.data.forEach((item) => {
+        const email = item["email"];
+        const orders = item["orders"];
+        console.log(item, item["orders"], item["email"]);
+        // console.log('email, orders', email, orders);
+        placeholders.push("(?, ?)");
+        values.push(email, orders);
+      });
+
+      const sql = `INSERT INTO allemail (email, orders) VALUES ${placeholders.join(
+        ", "
+      )}`;
+      const result = await pool.query(sql, values);
+
+      return NextResponse.json(result);
+    }
+
   } catch (error) {
     return NextResponse.json(
       { message: error.message },

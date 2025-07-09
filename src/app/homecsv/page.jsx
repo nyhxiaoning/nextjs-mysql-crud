@@ -1,69 +1,71 @@
-'use client';
-import React, { useState } from 'react';
-import Papa from 'papaparse';
-import { Table, Upload, message, Button,Modal,Input } from 'antd';
+"use client";
+import React, { useState } from "react";
+import Papa from "papaparse";
+import { Table, Upload, message, Button, Modal, Input } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 
+const VALID_CONFIRM_CODE = "jeejio2025";
 
-import { UploadOutlined } from '@ant-design/icons';
-// email表单数据汇总查询
-const VALID_CONFIRM_CODE = 'jeejio2025';
+async function batchInsertData(data, sourceType) {
+  console.log("导入来源类型:", sourceType);
+  console.log("导入批量数据到数据库:", data);
 
-
-async function batchInsertData(data) {
-  // 这里可以实现批量插入数据到数据库的逻辑
-  console.log('导入批量数据到数据库data', data);
-
-  let results = await fetch("/api/emails", {
+  // 这里区分另一个数据库存入区别一下
+  const response = await fetch("/api/emails", {
     method: "POST",
-    body: data,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      sourceType,
+      data,
+    }),
   });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
 
-  // let results = await axios.post("/api/emails", data);
-  console.log(results);
-  console.log('object---batchInsertData', data);
+  const result = await response.json();
+  console.log("上传结果:", result);
 }
 
-
-
-const CsvUploader= () => {
+const CsvUploader = () => {
   const [parsedData, setParsedData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [uploadFlag, setUploadFlag] = useState(false);
-
+  const [sourceType, setSourceType] = useState("default"); // 'default' or 'extended'
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [confirmCode, setConfirmCode] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [confirmCode, setConfirmCode] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // 打开确认码模态框
-  const handleButtonClick = () => {
-    setIsModalVisible(true);
-    setConfirmCode('');
-    setErrorMessage('');
-  };
+  const handleCSV = (file, type = "default") => {
+    setSourceType(type);
 
-  const handleCSV = (file) => {
     Papa.parse(file, {
-      header: true, // 首行为字段名
+      header: true,
       skipEmptyLines: true,
       complete: function (results) {
         const rows = results.data;
         console.log("解析后的 CSV 数据:", rows);
-        // 优化实战一下，一次性给数据库表插入所有的数据到table表中
-        // 插入数据到数据库中
-        // 清洗数据：去除空行和空列
-        // 只要当前的：email address 和 tracking number
-        let rows1 = rows.filter((row) => row['email address'] && row['tracking number']);
-        setParsedData(rows1);
+
+        const filteredArray = rows.map(({ email: email, orders: orders }) => ({
+          email: email,
+          orders: orders,
+        }));
+
+
+        setParsedData(filteredArray);
+        console.log("过滤后的 CSV 数据:", filteredArray);
         setUploadFlag(true);
-        // 自动生成列头
-        if (rows.length > 0) {
-          const keys = Object.keys(rows[0]);
+
+        if (filteredArray.length > 0) {
+          const keys = Object.keys(filteredArray[0]);
           const tableColumns = keys.map((key) => ({
             title: key,
             dataIndex: key,
-            key: key,
+            key,
           }));
           setColumns(tableColumns);
         }
@@ -71,83 +73,76 @@ const CsvUploader= () => {
         message.success("CSV 文件解析成功！");
       },
       error: function (error) {
-        console.error('CSV 解析错误:', error);
-        message.error('CSV 文件解析失败！');
+        console.error("CSV 解析错误:", error);
+        message.error("CSV 文件解析失败！");
       },
     });
   };
 
+  const handleButtonClick = () => {
+    setIsModalVisible(true);
+    setConfirmCode("");
+    setErrorMessage("");
+  };
 
-  // 验证确认码
   const handleConfirm = async () => {
     if (!confirmCode.trim()) {
-      setErrorMessage('请输入确认码');
+      setErrorMessage("请输入确认码");
       return;
     }
 
-    // 模拟验证过程（实际项目中应发送到后端验证）
     setLoading(true);
     try {
-      // 模拟API请求延迟
-      await new Promise(resolve => setTimeout(resolve, 800));
 
       if (confirmCode === VALID_CONFIRM_CODE) {
-        // 确认码正确，执行上传逻辑
-        // await uploadToDatabase();
-        await batchInsertData(parsedData);
+        await batchInsertData(parsedData, sourceType);
         Modal.success({
-          title: '操作成功',
-          content: '数据已成功上传到数据库',
+          title: "操作成功",
+          content: "数据已成功上传到数据库",
         });
         setIsModalVisible(false);
       } else {
-        setErrorMessage('确认码不正确，请重新输入');
+        setErrorMessage("确认码不正确，请重新输入");
       }
     } catch (error) {
       Modal.error({
-        title: '操作失败',
-        content: '上传过程中发生错误，请重试',
+        title: "操作失败",
+        content: "上传过程中发生错误，请重试",
       });
     } finally {
       setLoading(false);
     }
   };
 
-  // 模拟上传到数据库的函数（实际项目中应替换为真实API调用）
-  const uploadToDatabase = async () => {
-    // 这里是上传逻辑，如调用API
-    console.log(parsedData,'parsedData');
-    console.log('Uploading data to database...');
-    // 模拟上传延迟
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    return true;
-  };
-
-
-
-  const props = {
-    accept: '.csv',
-    beforeUpload: (file) => {
-      handleCSV(file);
-      return false; // 阻止自动上传
-    },
-    showUploadList: false,
-  };
-
-  const allprops = {
-    accept: ".csv",
-    beforeUpload: (file) => {
-      handleCSV(file);
-      return false; // 阻止自动上传
-    },
-    showUploadList: false,
-  };
-
   return (
     <div style={{ padding: 24 }}>
-      <Upload {...props}>
-        <Button icon={<UploadOutlined />}>上传仅有快递单号订单的 CSV 文件</Button>
-      </Upload>
+      <div style={{ marginBottom: 16, display: "flex", gap: "1rem" }}>
+        <Upload
+          accept=".csv"
+          beforeUpload={(file) => {
+            handleCSV(file, "default");
+            return false;
+          }}
+          showUploadList={false}
+        >
+          <Button icon={<UploadOutlined />}>
+            上传仅有快递单号订单的 CSV 文件
+          </Button>
+        </Upload>
+
+        <Upload
+          accept=".csv"
+          beforeUpload={(file) => {
+            handleCSV(file, "extended");
+            return false;
+          }}
+          showUploadList={false}
+        >
+          <Button icon={<UploadOutlined />}>
+            上传全量邮箱 CSV 文件
+          </Button>
+        </Upload>
+      </div>
 
       {uploadFlag && (
         <div style={{ marginTop: 20 }}>
@@ -157,7 +152,7 @@ const CsvUploader= () => {
 
           <Modal
             title="确认操作"
-            visible={isModalVisible}
+            open={isModalVisible}
             onCancel={() => setIsModalVisible(false)}
             footer={[
               <Button key="cancel" onClick={() => setIsModalVisible(false)}>
@@ -201,8 +196,6 @@ const CsvUploader= () => {
           bordered
         />
       )}
-
- 
     </div>
   );
 };

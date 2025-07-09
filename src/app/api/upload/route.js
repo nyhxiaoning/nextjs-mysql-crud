@@ -8,7 +8,7 @@ import path from "path";
 // export const bodyParser = false; // 直接导出 bodyParser 配置，配置nodejs的bodyparser
 
 export const runtime = 'nodejs';
-export const maxDuration = 30; // 请求最大时长（秒）
+export const maxDuration = 50; // 请求最大时长（秒）
 export const dynamic = 'force-dynamic'; // 禁用缓存
 // export const config = {
 //   api: {
