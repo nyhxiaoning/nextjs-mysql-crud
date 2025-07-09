@@ -149,7 +149,7 @@ const SearchCard = () => {
           >
             {/* <Text>{result}</Text> */}
 
-            {objdata && objdata?.orders && (
+            {objdata && objdata?.orders !== 0 && (
               <>
                 <p
                   style={{
@@ -200,7 +200,58 @@ const SearchCard = () => {
               </>
             )}
 
-            {!objdata?.orders && (
+            {objdata && objdata?.orders === 0 && (
+              <>
+                <p
+                  style={{
+                    margin: 0,
+                    fontFamily: "Arial, sans-serif",
+                    fontSize: "16px",
+                    lineHeight: "1.5",
+                    textAlign: "left",
+                  }}
+                >
+                  ✅ Your PixelMug 没有发货
+                </p>
+                <p
+                  style={{
+                    margin: 0,
+                    fontFamily: "Arial, sans-serif",
+                    fontSize: "16px",
+                    lineHeight: "1.5",
+                    textAlign: "left",
+                  }}
+                >
+                  Tracking number: {result?.orders}
+                </p>
+                <p
+                  style={{
+                    margin: 0,
+                    fontFamily: "Arial, sans-serif",
+                    fontSize: "16px",
+                    lineHeight: "1.5",
+                    textAlign: "left",
+                  }}
+                >
+                  <a
+                    target="_blank"
+                    href={`https://t.17track.net/en#nums=${result?.orders}`}
+                  >
+                    Track here: https://t.17track.net/
+                  </a>
+                </p>
+
+                {/* <CopyToClipboard
+                  text={result}
+                  style={{ marginLeft: 10, marginTop: 10 }}
+                  onCopy={() => setState({ copied: true })}
+                >
+                  <button>Copy to clipboard</button>
+                </CopyToClipboard> */}
+              </>
+            )}
+
+            {objdata?.orders !== 0 &&!objdata?.orders && (
               <div
                 style={{
                   maxWidth: "500px",
