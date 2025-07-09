@@ -14,12 +14,22 @@ export async function GET(request, { params }) {
     const result = await pool.query("SELECT * FROM email WHERE email = ?", [
       email,
     ]);
+    const allresult = await pool.query("SELECT * FROM allemail WHERE email = ?", [
+      email,
+    ]);
+
+    const combinedResult = [...result, ...allresult];
+    console.log(combinedResult, "combinedResult", "allresult[0].orders", allresult[0].orders);
     console.log(result, "result");
     if (result.length === 0) {
-      return NextResponse.json({});
+      console.log('zzzzzzzzz',result);
+      return NextResponse.json({
+        orders:0
+      });
     }
     return NextResponse.json(result[0]);
   } catch (error) {
+    console.log(error, "error");
     return NextResponse.json({ message: error.message });
   }
 }

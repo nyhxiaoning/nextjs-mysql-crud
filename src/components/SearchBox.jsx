@@ -64,11 +64,21 @@ const SearchCard = () => {
         console.log(inputValue.trim(), "inputValue.trim()");
         let tempResult = await SearchEmails(inputValue.trim());
         console.log(tempResult, "tempResult");
+        if(tempResult.orders === undefined){
+          console.log('没有查询到订单');
+        }
         setObjdata(tempResult);
         if (!tempResult ) {
+          // 没有订单信息
           // setResult("没有查询到相关内容");
           setResult(tempResult);
         } else {
+          // 邮箱可以查到，但是这里要判断一下，是否有订单信息
+          if (tempResult.orders === 0) {
+            // 没有订单信息
+            setResult("没订单");
+            return;
+          }
           setResult(tempResult);
         }
       } catch (error) {
