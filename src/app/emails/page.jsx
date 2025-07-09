@@ -1,8 +1,6 @@
 
-import axios from "axios";
 // import { ProductCard } from "@/components/ProductCard";
 
-import allData from "@/consts/allData.ts";
 import SearchBox from "../../components/SearchBox";
 
 

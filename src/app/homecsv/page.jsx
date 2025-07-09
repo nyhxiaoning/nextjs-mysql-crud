@@ -1,11 +1,7 @@
-// 生成一个Nextjs的组件，这个组件布局居中有一个输入框
-// app/components/CsvUploader.tsx
 'use client';
-
 import React, { useState } from 'react';
 import Papa from 'papaparse';
 import { Table, Upload, message, Button,Modal,Input } from 'antd';
-import axios from "axios";
 
 
 import { UploadOutlined } from '@ant-design/icons';
@@ -16,7 +12,13 @@ const VALID_CONFIRM_CODE = 'jeejio2025';
 async function batchInsertData(data) {
   // 这里可以实现批量插入数据到数据库的逻辑
   console.log('导入批量数据到数据库data', data);
-  let results = await axios.post("/api/emails", data);
+
+  let results = await fetch("/api/emails", {
+    method: "POST",
+    body: data,
+  });
+
+  // let results = await axios.post("/api/emails", data);
   console.log(results);
   console.log('object---batchInsertData', data);
 }
@@ -47,11 +49,13 @@ const CsvUploader= () => {
       skipEmptyLines: true,
       complete: function (results) {
         const rows = results.data;
-        console.log('解析后的 CSV 数据:', rows);
+        console.log("解析后的 CSV 数据:", rows);
         // 优化实战一下，一次性给数据库表插入所有的数据到table表中
         // 插入数据到数据库中
-
-        setParsedData(rows);
+        // 清洗数据：去除空行和空列
+        // 只要当前的：email address 和 tracking number
+        let rows1 = rows.filter((row) => row['email address'] && row['tracking number']);
+        setParsedData(rows1);
         setUploadFlag(true);
         // 自动生成列头
         if (rows.length > 0) {
@@ -64,7 +68,7 @@ const CsvUploader= () => {
           setColumns(tableColumns);
         }
 
-        message.success('CSV 文件解析成功！');
+        message.success("CSV 文件解析成功！");
       },
       error: function (error) {
         console.error('CSV 解析错误:', error);
@@ -72,6 +76,7 @@ const CsvUploader= () => {
       },
     });
   };
+
 
   // 验证确认码
   const handleConfirm = async () => {
@@ -129,19 +134,24 @@ const CsvUploader= () => {
     showUploadList: false,
   };
 
+  const allprops = {
+    accept: ".csv",
+    beforeUpload: (file) => {
+      handleCSV(file);
+      return false; // 阻止自动上传
+    },
+    showUploadList: false,
+  };
+
   return (
     <div style={{ padding: 24 }}>
       <Upload {...props}>
-        <Button icon={<UploadOutlined />}>上传 CSV 文件</Button>
+        <Button icon={<UploadOutlined />}>上传仅有快递单号订单的 CSV 文件</Button>
       </Upload>
 
-      {uploadFlag &&
+      {uploadFlag && (
         <div style={{ marginTop: 20 }}>
-          <Button
-            type="primary"
-            onClick={handleButtonClick}
-            loading={loading}
-          >
+          <Button type="primary" onClick={handleButtonClick} loading={loading}>
             上传到数据库
           </Button>
 
@@ -168,19 +178,19 @@ const CsvUploader= () => {
               value={confirmCode}
               onChange={(e) => {
                 setConfirmCode(e.target.value);
-                setErrorMessage('');
+                setErrorMessage("");
               }}
               placeholder="输入确认码"
               style={{ marginTop: 10 }}
             />
             {errorMessage && (
-              <div style={{ color: 'red', marginTop: 8, fontSize: 14 }}>
+              <div style={{ color: "red", marginTop: 8, fontSize: 14 }}>
                 {errorMessage}
               </div>
             )}
           </Modal>
         </div>
-      }
+      )}
 
       {parsedData.length > 0 && (
         <Table

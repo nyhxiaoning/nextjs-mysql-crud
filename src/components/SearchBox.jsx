@@ -12,7 +12,6 @@ import {
   message,
   // Link
 } from "antd";
-import axios from "axios";
 
 import allData from "../consts/allData";
 // import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -20,9 +19,14 @@ import allData from "../consts/allData";
 const { Title, Text } = Typography;
 async function SearchEmails(email) {
   try {
-    const { data } = await axios.get(
+    const res = await fetch(
       `${allData.baseURL}/api/emails/search?email=${encodeURIComponent(email)}`
     );
+    if (!res.ok) {
+      throw new Error(`Failed to fetch: ${res.status} ${res.statusText}`);
+    }
+    const data = await res.json();
+    
     console.log(data, "当前的 email");
     return data;
   } catch (error) {
