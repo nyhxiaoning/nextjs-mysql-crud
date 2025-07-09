@@ -38,6 +38,7 @@ const SearchCard = () => {
   const [inputValue, setInputValue] = useState("");
   const [result, setResult] = useState(null);
   const [objdata, setObjdata] = useState(null);
+  const [hasEmail, setHasEmail] = useState(false);
   const [state, setState] = useState({
     value: "",
     copied: false,
@@ -65,7 +66,10 @@ const SearchCard = () => {
         let tempResult = await SearchEmails(inputValue.trim());
         console.log(tempResult, "tempResult");
         if(tempResult.orders === undefined){
-          console.log('没有查询到订单');
+          console.log('没有查询到邮箱');
+          setHasEmail(false);
+        }else {
+          setHasEmail(true);
         }
         setObjdata(tempResult);
         if (!tempResult ) {
@@ -149,7 +153,7 @@ const SearchCard = () => {
           >
             {/* <Text>{result}</Text> */}
 
-            {objdata && objdata?.orders !== 0 && (
+            {hasEmail && objdata && objdata?.orders !== 0 && (
               <>
                 <p
                   style={{
@@ -200,7 +204,7 @@ const SearchCard = () => {
               </>
             )}
 
-            {objdata && objdata?.orders === 0 && (
+            {hasEmail && objdata && objdata?.orders === 0 && (
               <>
                 <p
                   style={{
@@ -251,7 +255,7 @@ const SearchCard = () => {
               </>
             )}
 
-            {objdata?.orders !== 0 &&!objdata?.orders && (
+            {!hasEmail && objdata?.orders !== 0 && !objdata?.orders && (
               <div
                 style={{
                   maxWidth: "500px",
