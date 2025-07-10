@@ -6,7 +6,7 @@ import mysql from "serverless-mysql";
 // database: "my_next_db",
 export const pool = mysql({
   config: {
-    host: "10.30.10.20", // 改为远程地址
+    host: "rm-0xiocabt0k05fu77p.mysql.rds-aliyun-america.rds.aliyuncs.com", // 改为远程地址
     user: "nodejs", // 改为远程数据库账号
     password: "Ec^jL33KBq6a", // 改为远程数据库密码
     // insecureAuth: true, // 允许旧版验证方式
