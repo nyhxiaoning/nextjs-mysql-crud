@@ -11,23 +11,37 @@ export async function GET(request, { params }) {
   const email = searchParams.get("email"); // 获取 name 参数
   console.log(email, "email");
   try {
+    const allresult = await pool.query(
+      "SELECT * FROM allemail WHERE email = ?",
+      [email]
+    );
+    const objallresult = JSON.parse(JSON.stringify(allresult));
+    console.log(objallresult, "objallresult");
+    
     const result = await pool.query("SELECT * FROM email WHERE email = ?", [
-      email,
+      email
     ]);
-    const allresult = await pool.query("SELECT * FROM allemail WHERE email = ?", [
-      email,
-    ]);
+    const objresult = JSON.parse(JSON.stringify(result));
+    console.log(objresult, "objresult");
 
-    const combinedResult = [...result, ...allresult];
-    console.log(combinedResult, "combinedResult", "allresult[0].orders", allresult[0].orders);
-    console.log(result, "result");
-    if (result.length === 0) {
-      console.log('zzzzzzzzz',result);
+    // let combinedResult = [...objallresult, ...objresult];
+    // 如果查到订单
+    if (objresult[0]?.orders) {
+      console.log(objresult[0]?.orders, "objresult[0]?.orders");
+      return NextResponse.json(result[0]);
+    }else if (!objresult[0]?.orders && objallresult[0]?.orders==="") {
+      console.log(objallresult[0]?.orders, "objallresult[0]?.orders");
+      console.log(objresult[0]?.orders, "objresult[0]?.orders");
+      // 如果查到了邮箱，但是订单空，那么返回0
       return NextResponse.json({
-        orders:0
+        orders: 0,
       });
+    }else{
+      // 没有查到邮箱，-1
+      return NextResponse.json({
+        orders: -1,
+      })
     }
-    return NextResponse.json(result[0]);
   } catch (error) {
     console.log(error, "error");
     return NextResponse.json({ message: error.message });

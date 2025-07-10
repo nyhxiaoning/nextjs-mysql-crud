@@ -26,7 +26,7 @@ async function SearchEmails(email) {
       throw new Error(`Failed to fetch: ${res.status} ${res.statusText}`);
     }
     const data = await res.json();
-    
+
     console.log(data, "当前的 email");
     return data;
   } catch (error) {
@@ -48,7 +48,7 @@ const SearchCard = () => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
   }
-  
+
   const handleSearch = async () => {
     console.log(inputValue, "inputValue");
     if (!inputValue.trim()) {
@@ -65,25 +65,21 @@ const SearchCard = () => {
         console.log(inputValue.trim(), "inputValue.trim()");
         let tempResult = await SearchEmails(inputValue.trim());
         console.log(tempResult, "tempResult");
-        if(tempResult.orders === undefined){
-          console.log('没有查询到邮箱');
-          setHasEmail(false);
-        }else {
-          setHasEmail(true);
-        }
+        // if(tempResult.orders === -1){
+        //   console.log('没有查询到邮箱');
+        //   setHasEmail(false);
+        //   console.log(hasEmail, "hasEmail");
+        // }else {
+        //   setHasEmail(true);
+        // }
         setObjdata(tempResult);
-        if (!tempResult ) {
+        setResult(tempResult);
+        if (objdata?.orders === -1) {
           // 没有订单信息
-          // setResult("没有查询到相关内容");
-          setResult(tempResult);
+          setHasEmail(false);
         } else {
-          // 邮箱可以查到，但是这里要判断一下，是否有订单信息
-          if (tempResult.orders === 0) {
-            // 没有订单信息
-            setResult("没订单");
-            return;
-          }
-          setResult(tempResult);
+          setHasEmail(true);
+
         }
       } catch (error) {
         // setResult("没有查询到相关内容");
@@ -153,7 +149,8 @@ const SearchCard = () => {
           >
             {/* <Text>{result}</Text> */}
 
-            {hasEmail && objdata && objdata?.orders !== 0 && (
+            {/* 这里判断一下，如果有订单信息，就显示订单信息 */}
+            {hasEmail && objdata?.orders !== 0 && (
               <>
                 <p
                   style={{
@@ -204,7 +201,7 @@ const SearchCard = () => {
               </>
             )}
 
-            {hasEmail && objdata && objdata?.orders === 0 && (
+            {hasEmail && objdata?.orders === 0 && (
               <>
                 <p
                   style={{
@@ -255,7 +252,7 @@ const SearchCard = () => {
               </>
             )}
 
-            {!hasEmail && objdata?.orders !== 0 && !objdata?.orders && (
+            {!hasEmail && objdata?.orders === -1 && (
               <div
                 style={{
                   maxWidth: "500px",
