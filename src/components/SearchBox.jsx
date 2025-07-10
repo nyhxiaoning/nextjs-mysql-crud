@@ -202,54 +202,74 @@ const SearchCard = () => {
             )}
 
             {hasEmail && objdata?.orders === 0 && (
-              <>
-                <p
+              <div
+                style={{
+                  maxWidth: "500px",
+                  margin: "0 auto",
+                  padding: "20px",
+                  border: "1px solid #eaeaea",
+                  borderRadius: "8px",
+                  backgroundColor: "#f9f9f9",
+                }}
+              >
+                <div
                   style={{
-                    margin: 0,
-                    fontFamily: "Arial, sans-serif",
-                    fontSize: "16px",
-                    lineHeight: "1.5",
-                    textAlign: "left",
+                    display: "flex",
+                    alignItems: "flex-start",
+                    marginBottom: "12px",
                   }}
                 >
-                  ✅ Your PixelMug 没有发货
-                </p>
-                <p
-                  style={{
-                    margin: 0,
-                    fontFamily: "Arial, sans-serif",
-                    fontSize: "16px",
-                    lineHeight: "1.5",
-                    textAlign: "left",
-                  }}
-                >
-                  Tracking number: {result?.orders}
-                </p>
-                <p
-                  style={{
-                    margin: 0,
-                    fontFamily: "Arial, sans-serif",
-                    fontSize: "16px",
-                    lineHeight: "1.5",
-                    textAlign: "left",
-                  }}
-                >
-                  <a
-                    target="_blank"
-                    href={`https://t.17track.net/en#nums=${result?.orders}`}
+                  <span
+                    style={{
+                      color: "#f56c6c",
+                      fontSize: "18px",
+                      marginRight: "10px",
+                    }}
                   >
-                    Track here: https://t.17track.net/
-                  </a>
+                    ⚠️
+                  </span>
+                  <p
+                    style={{
+                      margin: 0,
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "16px",
+                      lineHeight: "1.5",
+                      textAlign: "left",
+                    }}
+                  >
+                    Email verified! Your order just hasn't shipped yet. Thanks
+                    for your patience while we get it on its way.
+                  </p>
+                </div>
+
+                <p
+                  style={{
+                    margin: "12px 0",
+                    fontFamily: "Arial, sans-serif",
+                    fontSize: "16px",
+                    lineHeight: "1.5",
+                    textAlign: "left",
+                  }}
+                >
+                  Please make sure you're using the same email address you used
+                  when placing your order on Kickstarter.
                 </p>
 
-                {/* <CopyToClipboard
-                  text={result}
-                  style={{ marginLeft: 10, marginTop: 10 }}
-                  onCopy={() => setState({ copied: true })}
+                <p
+                  style={{
+                    margin: "12px 0",
+                    fontFamily: "Arial, sans-serif",
+                    fontSize: "16px",
+                    lineHeight: "1.5",
+                    textAlign: "left",
+                  }}
                 >
-                  <button>Copy to clipboard</button>
-                </CopyToClipboard> */}
-              </>
+                  We couldn't find the email you entered in our system. Please
+                  double-check that it's the same one you used when placing your
+                  order on Kickstarter. Tip: You can find the correct email
+                  under Settings on your Kickstarter account page.
+                </p>
+              </div>
             )}
 
             {!hasEmail && objdata?.orders === -1 && (
