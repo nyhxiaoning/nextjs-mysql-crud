@@ -74,12 +74,11 @@ const SearchCard = () => {
         // }
         setObjdata(tempResult);
         setResult(tempResult);
-        if (objdata?.orders === -1) {
+        if (tempResult?.orders === -1) {
           // 没有订单信息
           setHasEmail(false);
         } else {
           setHasEmail(true);
-
         }
       } catch (error) {
         // setResult("没有查询到相关内容");
@@ -148,7 +147,7 @@ const SearchCard = () => {
             style={{ margin: "0 auto", border: "0px" }}
           >
             {/* <Text>{result}</Text> */}
-
+            {/* {JSON.stringify(hasEmail, null, 2)} */}
             {/* 这里判断一下，如果有订单信息，就显示订单信息 */}
             {hasEmail && objdata?.orders !== 0 && (
               <>

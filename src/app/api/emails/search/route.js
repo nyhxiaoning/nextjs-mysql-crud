@@ -17,40 +17,41 @@ export async function GET(request, { params }) {
     );
     const objallresult = JSON.parse(JSON.stringify(allresult));
     console.log(objallresult, "objallresult");
-    
+
     const result = await pool.query("SELECT * FROM email WHERE email = ?", [
-      email
+      email,
     ]);
     const objresult = JSON.parse(JSON.stringify(result));
     console.log(objresult, "objresult");
-
+    await pool.end(); // ✅ 显式关闭连接
     // let combinedResult = [...objallresult, ...objresult];
     // 如果查到订单
     if (objresult[0]?.orders) {
       console.log(objresult[0]?.orders, "objresult[0]?.orders");
       return NextResponse.json(result[0]);
-    }else if (!objresult[0]?.orders && objallresult[0]?.orders==="") {
+    } else if (!objresult[0]?.orders && objallresult[0]?.orders === "") {
       console.log(objallresult[0]?.orders, "objallresult[0]?.orders");
       console.log(objresult[0]?.orders, "objresult[0]?.orders");
       // 如果查到了邮箱，但是订单空，那么返回0
       return NextResponse.json({
         orders: 0,
       });
-    }else{
+    } else {
       // 没有查到邮箱，-1
       return NextResponse.json({
         orders: -1,
-      })
+      });
     }
   } catch (error) {
     console.log(error, "error");
-    return NextResponse.json({ message: error.message });
+    return NextResponse.json({ orders: -1 });
   }
 }
 
 export async function DELETE(request, { params }) {
   try {
     await pool.query("DELETE FROM email WHERE id = ?", [params.id]);
+    await pool.end(); // ✅ 显式关闭连接
     return NextResponse.json({}, { status: 204 });
   } catch (error) {
     return NextResponse.json({ message: error.message });
@@ -62,6 +63,7 @@ export async function PUT(request, { params }) {
 
   try {
     await pool.query("UPDATE email SET ? WHERE id = ?", [data, params.id]);
+    await pool.end(); // ✅ 显式关闭连接
     return NextResponse.json({
       ...data,
       id: params.id,

@@ -14,6 +14,8 @@ async function batchInsertData(data, sourceType) {
   const response = await fetch("/api/emails", {
     method: "POST",
     headers: {
+      "Access-Control-Allow-Origin": "*", // 或指定域名
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({

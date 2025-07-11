@@ -1,5 +1,4 @@
 {
-  "/api/emails/route": "app/api/emails/route.js",
-  "/homecsv/page": "app/homecsv/page.js",
-  "/emails/page": "app/emails/page.js"
+  "/emails/page": "app/emails/page.js",
+  "/api/emails/search/route": "app/api/emails/search/route.js"
 }

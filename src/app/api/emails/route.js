@@ -11,6 +11,8 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     const results = await pool.query("SELECT * FROM email");
+    await pool.end(); // ✅ 显式关闭连接
+
     console.log(results, "Search-all");
     return NextResponse.json(results);
   } catch (error) {
@@ -91,7 +93,7 @@ export async function POST(request) {
         ", "
       )}`;
       const result = await pool.query(sql, values);
-
+      await pool.end(); // ✅ 显式关闭连接
       return NextResponse.json(result);
     } else if (data.sourceType === "extended") {
       // 全量导入
@@ -128,7 +130,7 @@ export async function POST(request) {
         ", "
       )}`;
       const result = await pool.query(sql, values);
-
+      await pool.end(); // ✅ 显式关闭连接
       return NextResponse.json(result);
     }
 
