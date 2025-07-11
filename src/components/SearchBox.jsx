@@ -20,7 +20,7 @@ const { Title, Text } = Typography;
 async function SearchEmails(email) {
   try {
     const res = await fetch(
-      `${allData.baseURL}/api/emails/search?email=${encodeURIComponent(email)}`
+      `/api/emails/search?email=${encodeURIComponent(email)}`
     );
     if (!res.ok) {
       throw new Error(`Failed to fetch: ${res.status} ${res.statusText}`);
