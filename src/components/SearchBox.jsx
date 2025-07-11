@@ -236,8 +236,7 @@ const SearchCard = () => {
                       textAlign: "left",
                     }}
                   >
-                    Email verified! Your order just hasn't shipped yet. Thanks
-                    for your patience while we get it on its way.
+                    Email verified! Your order just hasn't shipped yet.
                   </p>
                 </div>
 
@@ -250,24 +249,10 @@ const SearchCard = () => {
                     textAlign: "left",
                   }}
                 >
-                  Please make sure you're using the same email address you used
-                  when placing your order on Kickstarter.
+                  Thanks for your patience while we get it on its way.
                 </p>
 
-                <p
-                  style={{
-                    margin: "12px 0",
-                    fontFamily: "Arial, sans-serif",
-                    fontSize: "16px",
-                    lineHeight: "1.5",
-                    textAlign: "left",
-                  }}
-                >
-                  We couldn't find the email you entered in our system. Please
-                  double-check that it's the same one you used when placing your
-                  order on Kickstarter. Tip: You can find the correct email
-                  under Settings on your Kickstarter account page.
-                </p>
+              
               </div>
             )}
 
@@ -307,8 +292,7 @@ const SearchCard = () => {
                       textAlign: "left",
                     }}
                   >
-                    We couldn't find a tracking number associated with your
-                    email yet.
+                    We couldn't find the email you entered in our system.
                   </p>
                 </div>
 
@@ -321,22 +305,9 @@ const SearchCard = () => {
                     textAlign: "left",
                   }}
                 >
-                  Please make sure you're using the same email address you used
-                  when placing your order on Kickstarter.
-                </p>
-
-                <p
-                  style={{
-                    margin: "12px 0",
-                    fontFamily: "Arial, sans-serif",
-                    fontSize: "16px",
-                    lineHeight: "1.5",
-                    textAlign: "left",
-                  }}
-                >
-                  If that is correct, we kindly ask for your patience as we
-                  update the shipping information — or double-check that your
-                  shipping address has been submitted.
+                  Please double-check that it's the same one you used when
+                  placing your order on Kickstarter. Tip: You can find the
+                  correct email under Settings on your Kickstarter account page.
                 </p>
               </div>
             )}
