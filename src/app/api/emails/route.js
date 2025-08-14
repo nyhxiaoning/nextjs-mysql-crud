@@ -4,12 +4,32 @@ import { pool } from "src/config/db";
 import { NextResponse } from "next/server";
 
 // 所有数据 http://localhost:3000/emails
+
+// 模拟本地登录验证
+async function checkAuth(request) {
+  const cookieHeader = request.headers.get("cookie") || "";
+  const cookies = Object.fromEntries(
+    cookieHeader.split("; ").map(c => c.split("="))
+  );
+  // 简单判断 user_session 是否存在且有效
+  if (!cookies.user_session || cookies.user_session !== "logged_in") {
+    return false;
+  }
+  return true;
+}
 /**
  *
  * @returns 获取当前的所有的email的信息
  */
-export async function GET() {
+export async function GET(request) {
   try {
+    // 1. 校验本地假登录
+    const isAuthed = await checkAuth(request);
+    console.log(isAuthed, "isAuthed");
+    if (!isAuthed) {
+      return NextResponse.redirect(new URL("/emails", request.url)); // 302
+    }
+
     const results = await pool.query("SELECT * FROM email");
     await pool.end(); // ✅ 显式关闭连接
 

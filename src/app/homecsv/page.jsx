@@ -97,6 +97,22 @@ const CsvUploader = () => {
     try {
 
       if (confirmCode === VALID_CONFIRM_CODE) {
+        // 调用登录接口
+        const loginResponse = await fetch("/api/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+          confirmCode: confirmCode,
+          }),
+        });
+        if (!loginResponse.ok) {
+          throw new Error("登录失败");
+        }
+        const loginData = await loginResponse.json();
+        console.log("登录成功:", loginData);
+        // 调用 API 进行批量插入
         await batchInsertData(parsedData, sourceType);
         Modal.success({
           title: "操作成功",
